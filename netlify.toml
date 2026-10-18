@@ -1,0 +1,61 @@
+# ============================================================
+# Netlify configuration
+# ============================================================
+
+[build]
+  command = "npm run build"
+  publish = "dist"
+  functions = "netlify/functions"
+
+# ── Policy pages ────────────────────────────────────────────
+# These are plain HTML files, not part of the React app, so that
+# Razorpay's automated website check (and search engines) can read
+# them without running any JavaScript.
+#
+# These rules must come BEFORE the catch-all below — Netlify applies
+# redirects in order, and the catch-all would otherwise swallow them.
+
+[[redirects]]
+  from = "/pricing"
+  to = "/pricing.html"
+  status = 200
+
+[[redirects]]
+  from = "/terms"
+  to = "/terms.html"
+  status = 200
+
+[[redirects]]
+  from = "/privacy"
+  to = "/privacy.html"
+  status = 200
+
+[[redirects]]
+  from = "/refunds"
+  to = "/refunds.html"
+  status = 200
+
+[[redirects]]
+  from = "/shipping"
+  to = "/shipping.html"
+  status = 200
+
+[[redirects]]
+  from = "/contact"
+  to = "/contact.html"
+  status = 200
+
+# ── Single-page app ─────────────────────────────────────────
+# Everything else serves the React app. Functions declare their own
+# /api/* paths and take precedence over this.
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
+
+[[headers]]
+  for = "/*"
+  [headers.values]
+    X-Frame-Options = "SAMEORIGIN"
+    X-Content-Type-Options = "nosniff"
+    Referrer-Policy = "strict-origin-when-cross-origin"
