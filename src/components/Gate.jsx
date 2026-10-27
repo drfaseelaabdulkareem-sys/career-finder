@@ -12,6 +12,8 @@ const MESSAGES = {
   device_limit:    PRODUCT.MAX_DEVICES === 1
     ? "This login has already been used on another device. Each login works on one device only. If that device was yours — a phone you no longer use, say — message us on Instagram and we'll reset it for you."
     : `This login has already been used on ${PRODUCT.MAX_DEVICES} devices. If that was you — a new phone, say — message us on Instagram and we'll reset it.`,
+  server_misconfigured:
+    "Your login is correct, but the site isn't finished being set up. Message us on Instagram and we'll fix it straight away — you will not need to pay again.",
   login_failed:    'Something went wrong on our side. Try again in a moment.',
 };
 
@@ -84,17 +86,6 @@ export default function Gate({ onUnlock }) {
 
   return (
     <div className="shell">
-      <header className="topbar">
-        <div className="brand">Career<span>Finder</span></div>
-        <nav className="topnav">
-          <a href="#what">What you get</a>
-          <a href="#how">How it works</a>
-          <a href="#faq">Questions</a>
-          <a href="/pricing">Pricing</a>
-        </nav>
-        <Start className="btn btn-primary btn-pill" />
-      </header>
-
       <section className="opener">
         <VortexArt />
         {/* Drop a licensed portrait in here when you have one:
@@ -105,6 +96,16 @@ export default function Gate({ onUnlock }) {
             Clinics aren&rsquo;t
             <span className="lime">the only answer.</span>
           </h1>
+
+          <div className="opener-get">
+            <div className="opener-get-h">Buy the worksheet to get access to:</div>
+            <ol className="opener-get-list">
+              <li>The 3 careers that fit you best</li>
+              <li>The salary range for each</li>
+              <li>Your 90-day roadmap</li>
+            </ol>
+          </div>
+
           <Start className="btn-start" label="START" />
         </div>
       </section>

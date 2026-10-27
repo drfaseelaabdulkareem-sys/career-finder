@@ -135,10 +135,23 @@ function dashboard(rows, message = '', fresh = []) {
           </div></td>
         </tr>`).join('')}</tbody></table></div>`;
 
+  const secret = process.env.SESSION_SECRET || '';
+  const secretOk = secret.length >= 32;
+  const settingsWarning = secretOk ? '' : `<div class="card" style="border-color:var(--danger)">
+    <div style="font-weight:700;color:var(--danger);margin-bottom:6px">Buyers cannot sign in yet</div>
+    <div class="sub" style="margin:0">
+      SESSION_SECRET is ${secret ? `only ${secret.length} characters long` : 'not set'}.
+      It must be at least 32. Set it in Netlify under Site configuration →
+      Environment variables, then deploy again. Logins will fail at the last
+      step until you do — the password is accepted and then the sign-in breaks.
+    </div>
+  </div>`;
+
   return page(`
     <h1>Career Finder</h1>
     <div class="sub">${rows.length} login${rows.length === 1 ? '' : 's'} · ${unused} still unused</div>
     ${message ? `<div class="note">${escapeHtml(message)}</div>` : ''}
+    ${settingsWarning}
     <div class="card"><div class="stats">
       <div class="stat"><b>${unused}</b><span>Ready to hand out</span></div>
       <div class="stat"><b>${active}</b><span>Active</span></div>

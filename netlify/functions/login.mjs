@@ -47,12 +47,21 @@ export default async (request) => {
     }, status);
   }
 
-  return json({
-    session: createSession({
+  // The credentials were right and the device is registered. The only
+  // thing that can still fail here is a missing or too-short
+  // SESSION_SECRET, which is a setup mistake, not the buyer's fault —
+  // so say that plainly instead of a generic error.
+  let session;
+  try {
+    session = createSession({
       token: result.record.id,
       deviceId,
       tokenExpiresAt: result.record.expiresAt,
-    }),
-    expiresAt: result.record.expiresAt,
-  });
+    });
+  } catch (err) {
+    console.error('SESSION_SECRET is missing or shorter than 32 characters:', err.message);
+    return json({ error: 'server_misconfigured' }, 500);
+  }
+
+  return json({ session, expiresAt: result.record.expiresAt });
 };
